@@ -19,8 +19,8 @@ This project is a document scanning and credit management system built with Djan
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Dhritishah03/document-scanner.git
-cd document-scanner
+git clone https://github.com/Dhritishah03/DocScanner-Similarity-Generation.git
+cd DocScanner-Similarity-Generation
 ```
 
 ### 2. Create and Activate a Virtual Environment
