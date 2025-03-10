@@ -1,0 +1,23 @@
+<!-- templates/admin/credit_requests_list.html -->
+{% extends 'base.html' %}
+{% block title %}Credit Requests{% endblock %}
+{% block content %}
+    <h2>Credit Requests</h2>
+    <table>
+        <tr>
+            <th>User</th>
+            <th>Requested Credits</th>
+            <th>Actions</th>
+        </tr>
+        {% for request in credit_requests %}
+        <tr>
+            <td>{{ request.user.username }}</td>
+            <td>{{ request.requested_credits }}</td>
+            <td>
+                <a href="{% url 'approve_credit_request' request.id %}">Approve</a>
+                <a href="{% url 'deny_credit_request' request.id %}">Deny</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

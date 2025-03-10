@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <h1>Welcome, {{ profile.user.username }}</h1>
+        <div class="credits-badge">
+            <span class="credits-label">Available Credits:</span>
+            <span class="credits-value">{{ profile.credits }}</span>
+        </div>
+    </div>
+
+    <div class="profile-sections">
+        <div class="section">
+            <h2>Past Scans</h2>
+            {% if past_scans %}
+                <div class="scan-list">
+                    {% for scan in past_scans %}
+                        <div class="scan-item">
+                            <span class="document-name">{{ scan.document_name }}</span>
+                            <span class="scan-date">{{ scan.scanned_at }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="empty-message">No scans yet</p>
+            {% endif %}
+        </div>
+
+        <div class="section">
+            <h2>Credit Requests</h2>
+            {% if requests %}
+                <div class="request-list">
+                    {% for request in requests %}
+                        <div class="request-item">
+                            <span class="request-date">{{ request.created_at }}</span>
+                            <span class="request-status {{ request.status|lower }}">{{ request.status }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="empty-message">No credit requests found.</p>
+            {% endif %}
+        </div>
+
+        <!-- Improved Credit Request Section -->
+        {% if profile.credits == 0 %}
+        <div class="credit-request-section">
+            <div class="credit-info">
+                <p>You have <strong>0 credits</strong> left. Request more credits to continue scanning.</p>
+            </div>
+            <div class="credit-request-container">
+                <form action="{% url 'request_credits' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="credit-request-button">Request More Credits</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .profile-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .profile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .credits-badge {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 20px;
+        font-weight: bold;
+    }
+
+    .credits-label {
+        font-size: 0.9rem;
+        margin-right: 8px;
+    }
+
+    .credits-value {
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+
+    .profile-sections {
+        display: grid;
+        gap: 30px;
+    }
+
+    .section {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .scan-list, .request-list {
+        display: grid;
+        gap: 10px;
+    }
+
+    .scan-item, .request-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+        align-items: center;
+    }
+
+    .document-name {
+        font-weight: 500;
+    }
+
+    .scan-date, .request-date {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .request-status {
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        text-transform: capitalize;
+        font-weight: bold;
+    }
+
+    .request-status.pending {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+
+    .request-status.approved {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .request-status.rejected {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .empty-message {
+        color: #666;
+        text-align: center;
+        padding: 20px;
+    }
+
+    /* Improved Credit Request Section */
+    .credit-request-section {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        margin-top: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .credit-info {
+        font-size: 1rem;
+        color: #444;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .credit-request-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .credit-request-button {
+        background-color: var(--secondary-color);
+        color: white;
+        padding: 12px 24px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .credit-request-button:hover {
+        background-color: var(--primary-color);
+    }
+</style>
+{% endblock %}

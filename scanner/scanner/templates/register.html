@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <h1>Create Account</h1>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{% if message.tags %}{{ message.tags }}{% endif %} message">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST" class="auth-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username">Username</label>
+            {{ form.username }}
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            {{ form.email }}
+        </div>
+        <div class="form-group">
+            <label for="password1">Password</label>
+            {{ form.password1 }}
+        </div>
+        <div class="form-group">
+            <label for="password2">Confirm Password</label>
+            {{ form.password2 }}
+        </div>
+        <button type="submit">Register</button>
+        <p class="auth-link">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+    </form>
+</div>
+
+<style>
+    .auth-container {
+        max-width: 400px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .auth-form {
+        text-align: left;
+        background-color: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .message {
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+
+    .error {
+        background-color: #fde8e8;
+        border: 1px solid #f8b4b4;
+        color: #c81e1e;
+    }
+
+    .success {
+        background-color: #def7ec;
+        border: 1px solid #84e1bc;
+        color: #03543f;
+    }
+
+    .auth-link {
+        margin-top: 20px;
+        text-align: center;
+        color: var(--text-color);
+    }
+
+    .auth-link a {
+        color: var(--secondary-color);
+        text-decoration: none;
+    }
+
+    .auth-link a:hover {
+        text-decoration: underline;
+    }
+
+    .helptext {
+        display: block;
+        font-size: 0.875rem;
+        color: #666;
+        margin-top: 4px;
+    }
+
+    ul.errorlist {
+        color: #c81e1e;
+        font-size: 0.875rem;
+        list-style: none;
+        padding: 0;
+        margin: 5px 0;
+    }
+</style>
+{% endblock %}

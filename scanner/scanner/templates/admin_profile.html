@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="dashboard-header">
+        <h1>Admin Dashboard</h1>
+        <div class="status-summary">
+            <span class="status-badge">Pending: {{ credit_requests|length }}</span>
+        </div>
+    </div>
+
+    <div class="requests-section">
+        <h2>Credit Requests</h2>
+        {% if credit_requests %}
+            <div class="requests-table">
+                <div class="table-header">
+                    <div class="col">User</div>
+                    <div class="col">Status</div>
+                    <div class="col">Actions</div>
+                </div>
+                {% for request in credit_requests %}
+                    <div class="table-row">
+                        <div class="col user-info">
+                            <span class="username">{{ request.user.username }}</span>
+                        </div>
+                        <div class="col">
+                            <span class="status-badge {{ request.status|lower }}">{{ request.status }}</span>
+                        </div>
+                        <div class="col actions">
+                            {% if request.id %}
+                                <a href="{% url 'manage_credit_requests' request.id 'approve' %}"
+                                   class="action-btn approve">Approve</a>
+                                <a href="{% url 'manage_credit_requests' request.id 'deny' %}"
+                                   class="action-btn deny">Deny</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>No pending credit requests</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .admin-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .requests-section {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        padding: 20px;
+    }
+
+    .requests-table {
+        width: 100%;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+    .table-header {
+        display: grid;
+        grid-template-columns: 2fr 1fr 2fr;
+        background: #f8f9fa;
+        padding: 15px;
+        font-weight: 600;
+    }
+
+    .table-row {
+        display: grid;
+        grid-template-columns: 2fr 1fr 2fr;
+        padding: 15px;
+        align-items: center;
+        border-bottom: 1px solid #eee;
+        transition: background-color 0.2s;
+    }
+
+    .table-row:hover {
+        background-color: #f8f9fa;
+    }
+
+    .table-row:last-child {
+        border-bottom: none;
+    }
+
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-size: 0.875rem;
+        display: inline-block;
+    }
+
+    .status-badge.pending {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+
+    .status-badge.approved {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .status-badge.denied {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .action-btn {
+        padding: 8px 16px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 0.875rem;
+        transition: opacity 0.2s;
+    }
+
+    .action-btn:hover {
+        opacity: 0.9;
+    }
+
+    .action-btn.approve {
+        background-color: var(--secondary-color);
+        color: white;
+    }
+
+    .action-btn.deny {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 40px;
+        color: #666;
+    }
+
+    .username {
+        font-weight: 500;
+        color: var(--text-color);
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<h1>Welcome, {{ profile.user.username }}</h1>
+<p>Credits: {{ profile.credits }}</p>
+<h2>Past Scans</h2>
+<ul>
+    {% for scan in past_scans %}
+        <li>{{ scan.document_name }} - {{ scan.scanned_at }}</li>
+    {% endfor %}
+</ul>
+<h2>Credit Requests</h2>
+<ul>
+    {% for request in requests %}
+        <li>{{ request.request_date }} - {{ request.status }}</li>
+    {% endfor %}
+</ul>
+{% if profile.credits == 0 %}
+        <form action="{% url 'request_credits' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Request Credits</button>
+        </form>
+{% endif %}
+{% endblock %}
