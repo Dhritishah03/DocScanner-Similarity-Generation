@@ -28,6 +28,7 @@ cd DocScanner-Similarity-Generation
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+cd scanner
 ```
 
 ### 3. Install Python Dependencies
